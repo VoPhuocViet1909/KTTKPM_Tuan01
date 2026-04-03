@@ -1,0 +1,9 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+INSERT INTO users (username, email) VALUES 
+('viet_dev', 'viet@example.com'),
+('viet1_dev', 'viet1@google.com');
