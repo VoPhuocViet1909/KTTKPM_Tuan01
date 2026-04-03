@@ -1,0 +1,7 @@
+services:
+  web-server: # Tên service (do bạn tự đặt)
+    image: nginx:latest # Sử dụng image chính thức từ Docker Hub
+    container_name: my-nginx-compose # Đặt tên cố định cho container
+    ports:
+      - "8080:80" # Map cổng 8080 (host) với cổng 80 (container)
+    restart: always # Tự động khởi động lại nếu container bị lỗi

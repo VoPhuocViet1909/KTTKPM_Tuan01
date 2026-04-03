@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  web-node:
+    build: ./Ex01_Node # Đường dẫn tới thư mục chứa Dockerfile bài 1
+    ports:
+      - "3000:3000"
+
+  web-nginx:
+    build: ./Ex04_Nginx # Đường dẫn tới thư mục chứa Dockerfile bài 4
+    ports:
+      - "8080:80"

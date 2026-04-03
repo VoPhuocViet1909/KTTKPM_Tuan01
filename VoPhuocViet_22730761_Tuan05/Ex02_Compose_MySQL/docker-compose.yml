@@ -1,0 +1,13 @@
+services:
+  db-mysql:
+    image: mysql:8.0 # Sử dụng phiên bản 8.0 theo yêu cầu
+    container_name: my-mysql-container
+    ports:
+      - "3306:3306" # Cổng mặc định của MySQL
+    environment:
+      # Các biến môi trường bắt buộc của Image MySQL
+      - MYSQL_ROOT_PASSWORD=rootpassword # Mật khẩu cho tài khoản root
+      - MYSQL_DATABASE=mydb # Tạo sẵn database tên mydb
+      - MYSQL_USER=user # Tạo thêm một user thường
+      - MYSQL_PASSWORD=password # Mật khẩu cho user thường
+    restart: always

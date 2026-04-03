@@ -1,0 +1,25 @@
+services:
+  # Service Database (MySQL 8.0)
+  db-mysql:
+    image: mysql:8.0
+    container_name: mysql-db-server
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=mydb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3306:3306" # Bây giờ bạn có thể dùng cổng mặc định thoải mái
+    restart: always
+
+  # Service giao diện quản lý (PHPMyAdmin)
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: pma-gui
+    environment:
+      - PMA_HOST=db-mysql # Kết nối nội bộ tới service db-mysql
+      - PMA_PORT=3306 # Cổng nội bộ của MySQL
+    ports:
+      - "8081:80" # Truy cập qua localhost:8081 theo yêu cầu
+    depends_on:
+      - db-mysql # Đảm bảo MySQL khởi động trước
