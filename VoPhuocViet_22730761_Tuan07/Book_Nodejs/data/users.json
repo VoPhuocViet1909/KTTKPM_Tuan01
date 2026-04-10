@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "1775822338966",
+      "name": "Test User",
+      "email": "test@example.com",
+      "passwordHash": "$2a$10$fNMoOCZfZfq6ADCmQXN8TOiwtOcC9lN4NdZTHfGlBYfLXEzsFgXf6",
+      "createdAt": "2026-04-10T11:58:58.966Z"
+    },
+    {
+      "id": "1775822435540",
+      "name": "Lan User",
+      "email": "lanuser@example.com",
+      "passwordHash": "$2a$10$2tSOt43F5zOCdvf20DvHJe32AWdTV9NgdIEyQBN6mXYPPfDwmOmca",
+      "createdAt": "2026-04-10T12:00:35.540Z"
+    },
+    {
+      "id": "1775824877696",
+      "name": "Broker User",
+      "email": "broker.user@example.com",
+      "passwordHash": "$2a$10$dYok3V6z.O6Yxn2YlJo57efxjCtEThQJFrACny3GaQKl0uw49ax9O",
+      "createdAt": "2026-04-10T12:41:17.696Z"
+    },
+    {
+      "id": "1775825221158",
+      "name": "NoJwt User",
+      "email": "nojwt.user@example.com",
+      "passwordHash": "$2a$10$TpldmCIVnr9fQj43JNSpw.ZOzKz9vliXvB508xJ.sUrbydHxSimu2",
+      "createdAt": "2026-04-10T12:47:01.158Z"
+    }
+  ]
+}
