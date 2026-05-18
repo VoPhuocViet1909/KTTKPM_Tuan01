@@ -1,0 +1,28 @@
+server:
+  port: 8083
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: media-service
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+aws:
+  credentials:
+    access-key: ${ACCESS_KEY}
+    secret-key: ${SECRET_KEY}
+  region:
+    static: ${REGION}
+  s3:
+    bucket: ${BUCKET_NAME}
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

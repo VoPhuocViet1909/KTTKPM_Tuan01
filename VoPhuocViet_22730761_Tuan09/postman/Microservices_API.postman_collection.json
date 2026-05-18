@@ -1,0 +1,479 @@
+{
+	"info": {
+		"_postman_id": "microservices-api-collection",
+		"name": "Microservices API",
+		"description": "Postman collection cho microservices: user-service, product-service. Vào qua api-gateway port 9191.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:9191",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "USER-SERVICE",
+			"item": [
+				{
+					"name": "Authentication",
+					"item": [
+						{
+							"name": "POST /api/v1/auth/login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@javabuilder.com\",\n    \"password\": \"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/auth/login",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "auth", "login"]
+								},
+								"description": "Đăng nhập để lấy access token và refresh token. Sau khi login thành công, copy accessToken vào biến môi trường {{accessToken}} và refreshToken vào {{refreshToken}}."
+							},
+							"response": []
+						},
+						{
+							"name": "POST /api/v1/auth/refresh-token",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"cookie": {
+									"refresh_token": "{{refreshToken}}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/auth/refresh-token",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "auth", "refresh-token"]
+								},
+								"description": "Dùng refresh token (cookie) để lấy access token mới khi token hết hạn."
+							},
+							"response": []
+						},
+						{
+							"name": "POST /api/v1/auth/logout",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"cookie": {
+									"refresh_token": "{{refreshToken}}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/auth/logout",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "auth", "logout"]
+								},
+								"description": "Đăng xuất - xóa refresh token khỏi server."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User Management",
+					"item": [
+						{
+							"name": "POST /api/v1/users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"newuser@example.com\",\n    \"password\": \"password123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/users",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "users"]
+								},
+								"description": "Tạo user mới. Yêu cầu đăng nhập (JWT token)."
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/v1/users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/users",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "users"]
+								},
+								"description": "Lấy danh sách tất cả users. Yêu cầu đăng nhập."
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/v1/users/me",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/users/me",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "users", "me"]
+								},
+								"description": "Lấy thông tin user hiện tại (từ JWT token). Không cần truyền userId."
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "PRODUCT-SERVICE",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "POST /api/v1/categories",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Electronics\",\n    \"description\": \"Electronic devices and accessories\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/categories",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "categories"]
+								},
+								"description": "Tạo danh mục sản phẩm mới. Yêu cầu đăng nhập."
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/v1/categories",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/categories",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "categories"]
+								},
+								"description": "Lấy danh sách tất cả danh mục (không cần đăng nhập)."
+							},
+							"response": []
+						},
+						{
+							"name": "PUT /api/v1/categories/:id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Updated Category Name\",\n    \"description\": \"Updated description\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/categories/:id",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "categories", ":id"]
+								},
+								"description": "Cập nhật danh mục theo ID. Thay :id bằng category ID thực tế."
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /api/v1/categories/:id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/categories/:id",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "categories", ":id"]
+								},
+								"description": "Xóa danh mục theo ID. Thay :id bằng category ID thực tế."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "POST /api/v1/products",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"categoryId\": \"CATEGORY_ID_HERE\",\n    \"name\": \"iPhone 15 Pro\",\n    \"description\": \"Latest Apple smartphone\",\n    \"price\": 1199.99,\n    \"quantity\": 100,\n    \"images\": [\n        {\n            \"imageUrl\": \"https://example.com/iphone15.jpg\",\n            \"displayOrder\": 1\n        }\n    ],\n    \"status\": \"ACTIVE\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/products",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "products"]
+								},
+								"description": "Tạo sản phẩm mới. Yêu cầu đăng nhập. Thay CATEGORY_ID_HERE bằng category ID thực tế."
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/v1/products",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/products?categoryId=&name=&minPrice=&maxPrice=&status=&inStock=",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "products"],
+									"query": [
+										{
+											"key": "categoryId",
+											"value": "",
+											"description": "Lọc theo category ID"
+										},
+										{
+											"key": "name",
+											"value": "",
+											"description": "Tìm kiếm theo tên sản phẩm"
+										},
+										{
+											"key": "minPrice",
+											"value": "",
+											"description": "Giá tối thiểu"
+										},
+										{
+											"key": "maxPrice",
+											"value": "",
+											"description": "Giá tối đa"
+										},
+										{
+											"key": "status",
+											"value": "",
+											"description": "ACTIVE, INACTIVE, DISCONTINUED"
+										},
+										{
+											"key": "inStock",
+											"value": "",
+											"description": "true/false - còn hàng hay không"
+										}
+									]
+								},
+								"description": "Lấy danh sách sản phẩm (có hỗ trợ filter/search). Không cần đăng nhập."
+							},
+							"response": []
+						},
+						{
+							"name": "GET /api/v1/products/:id",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/products/:id",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "products", ":id"]
+								},
+								"description": "Lấy chi tiết sản phẩm theo ID. Thay :id bằng product ID thực tế. Không cần đăng nhập."
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE /api/v1/products/:id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/v1/products/:id",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "v1", "products", ":id"]
+								},
+								"description": "Xóa sản phẩm theo ID. Thay :id bằng product ID thực tế. Yêu cầu đăng nhập."
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
